@@ -23,7 +23,7 @@ pub fn apply_dot_product(a : &mut Vec<Vec<f64>>, b : &mut Vec<Vec<f64>>) -> Vec<
     return z;
 }
 
-fn transpose<T>(v: Vec<Vec<T>>) -> Vec<Vec<T>>
+pub(crate) fn transpose<T>(v: Vec<Vec<T>>) -> Vec<Vec<T>>
 where
     T: Clone,
 {

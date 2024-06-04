@@ -3,7 +3,7 @@ use crate::matrix_functions::apply_dot_product;
 use std::f32::consts::PI;
 
 
-pub struct FPV {
+pub struct forward_output {
     pub a1 : Vec<Vec<f64>>,
     pub probs: Vec<Vec<f64>>,
 }
@@ -53,12 +53,10 @@ fn calc_probs(exp_scores : &mut Vec<Vec<f64>>) -> Vec<Vec<f64>> {
     return probs;
 }
 
-// This needs better name TODO
 
+pub fn apply_forward_propagation (model : &mut NN, x : &mut Vec<Vec<f64>>) -> forward_output{
 
-pub fn apply_forward_propagation (model : &mut NN, x : &mut Vec<Vec<f64>>) -> FPV{
-
-    let mut fpv = FPV {
+    let mut fpv = forward_output {
         a1: Vec::new(),
         probs: Vec::new(),
     };
@@ -67,9 +65,11 @@ pub fn apply_forward_propagation (model : &mut NN, x : &mut Vec<Vec<f64>>) -> FP
     let mut z1 = apply_dot_product(x, &mut model.weights_1);
     add_bias(&mut z1, &mut model.bias_1);
 
-    // calculate a1
+    // calculate a1s
     fpv.a1 = z1.clone();
     apply_tanh(&mut fpv.a1);
+
+    println!("{:?}", fpv.a1);
 
     // calculate z2
     let mut z2 = apply_dot_product(&mut fpv.a1, &mut model.weights_2);
@@ -81,7 +81,7 @@ pub fn apply_forward_propagation (model : &mut NN, x : &mut Vec<Vec<f64>>) -> FP
 
     // calculate probabilities
     fpv.probs = calc_probs(&mut exp_scores);
-    
+
     // and return probabilities
     return fpv;
 }

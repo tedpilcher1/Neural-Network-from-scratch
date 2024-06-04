@@ -1,6 +1,6 @@
 use crate::init_model::NN;
-use create::dot_product::apply_dot_product;
-use create::dot_product::transpose;
+use crate::matrix_functions::apply_dot_product;
+use crate::matrix_functions::transpose;
 
 fn sum(delta : &mut Vec<Vec<f64>>) -> Vec<Vec<f64>>{
 
@@ -20,25 +20,25 @@ fn sum(delta : &mut Vec<Vec<f64>>) -> Vec<Vec<f64>>{
 
 fn apply_backward_propagation (model : &mut NN, probs : &mut Vec<Vec<f64>>, x : &mut Vec<Vec<f64>>, y : &mut Vec<i64>) {
 
-    // calculate delta3
-    let mut delta3 = probs.clone();
-    // TODO
-
-    // calculate dW2
-    let mut a1T = transpose(a1);
-    let dW2 = apply_dot_product(&mut a1T, &mut delta3);
-
-    // calculate db2
-    let mut db2 = sum(delta3);
-
-    // calculate delta2
-    let w2T = transpose(model.weights_2);
-    let mut delta2 = dot(delta3, w2T);
-
-    // calculate dW1
-    xT = transpose(x);
-    let dW1 = apply_dot_product(&mut xT, &mut delta2);
-
-    // calculate db1
-    let db1 = sum(delta2);
+    // // calculate delta3
+    // let mut delta3 = probs.clone();
+    // // TODO
+    //
+    // // calculate dW2
+    // let mut a1T = transpose(a1);
+    // let dW2 = apply_dot_product(&mut a1T, &mut delta3);
+    //
+    // // calculate db2
+    // let mut db2 = sum(delta3);
+    //
+    // // calculate delta2
+    // let w2T = transpose(model.weights_2);
+    // let mut delta2 = dot(delta3, w2T);
+    //
+    // // calculate dW1
+    // xT = transpose(x);
+    // let dW1 = apply_dot_product(&mut xT, &mut delta2);
+    //
+    // // calculate db1
+    // let db1 = sum(delta2);
 }

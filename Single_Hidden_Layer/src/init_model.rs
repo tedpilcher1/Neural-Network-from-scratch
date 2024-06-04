@@ -16,28 +16,18 @@ pub struct NN {
 
 fn init_layer_weights(weights: &mut Vec<Vec<f64>>, normal: &Normal<f64>, rng: &mut ThreadRng, prev_layer_size: i32, curr_layer_size: i32){
 
+    let sqrt_input_size = f64::from(prev_layer_size).sqrt();
+
     for _i in 0..prev_layer_size {
         
         let mut new_weights: Vec<f64> = Vec::new();
 
         for _j in 0..curr_layer_size {
-            new_weights.push(normal.sample(rng));
+            new_weights.push(normal.sample(rng) / sqrt_input_size);
         }
 
         weights.push(new_weights);
     }
-}
-
-fn init_bias(bias: &mut Vec<Vec<f64>>, num_nodes : i32){
-    
-    let mut row: Vec<f64> = Vec::new();
-    for _i in 0..num_nodes {
-        
-        row.push(0.0)
-    }
-
-    bias.push(row)
-
 }
 
 pub fn build_model (input_size: i32, hidden_layer_size : i32, output_size : i32) -> NN {
@@ -50,11 +40,11 @@ pub fn build_model (input_size: i32, hidden_layer_size : i32, output_size : i32)
         hidden_layer_size: hidden_layer_size,
         weights_1: Vec::new(),
         weights_2: Vec::new(),
-        bias_1: Vec::new(),
-        bias_2: Vec::new(),
+        bias_1: vec![vec![0.0; hidden_layer_size as usize]; 1],
+        bias_2:  vec![vec![0.0; output_size as usize]; 1],
     };
 
-    let normal = Normal::new(0.0, 2.2361).unwrap();
+    let normal = Normal::new(0.0, 1.0).unwrap();
     let mut rng = thread_rng();
 
     // initalise first layer weights
@@ -62,10 +52,6 @@ pub fn build_model (input_size: i32, hidden_layer_size : i32, output_size : i32)
 
     // initalise second layer weights
     init_layer_weights(&mut model.weights_2, &normal, &mut rng, model.hidden_layer_size, model.output_size);
-
-    // initalise biases
-    init_bias(&mut model.bias_1, model.hidden_layer_size);
-    init_bias(&mut model.bias_2, model.output_size);
 
     return model;
 }
