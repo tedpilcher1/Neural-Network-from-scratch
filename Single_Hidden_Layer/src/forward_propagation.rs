@@ -10,44 +10,60 @@ pub struct forward_output {
 
 fn add_bias (z : &mut Vec<Vec<f64>>, b : &mut Vec<Vec<f64>>) {
 
-    for i in 0..z[0].len(){
+    for i in 0..z.len(){
 
-        z[0][i] += b[0][i];
+        for j in 0..z[0].len(){
+
+            z[i][j] += b[0][j];
+        }
     }
 }
 
 fn apply_tanh(z: &mut Vec<Vec<f64>>){
 
-    for i in 0..z[0].len() {
+    for i in 0..z.len(){
 
-        z[0][i] = z[0][i].tanh();
-    }    
+        for j in 0..z[0].len(){
+
+            z[i][j] = z[i][j].tanh();
+        }
+    }
 }
 
 fn calc_exp(z : &mut Vec<Vec<f64>>) {
 
-    for i in 0..z[0].len() {
-
-        z[0][i] = z[0][i].exp();
+    for i in 0..z.len() {
+        for j in 0..z[0].len() {
+            z[i][j] = z[i][j].exp();
+        }
     }
 }
 
 fn calc_probs(exp_scores : &mut Vec<Vec<f64>>) -> Vec<Vec<f64>> {
 
     // sum scores
-    let mut sum: f64 = 0.0;
+    let mut sums = vec![0.0; exp_scores.len()];
 
-    for i in 0..exp_scores[0].len() {
+    for i in 0..exp_scores.len(){
 
-        sum += exp_scores[0][i];
+        let mut curr_sum:f64 = 0.0;
+        for j in 0..exp_scores[0].len(){
+
+            curr_sum += exp_scores[i][j];
+        }
+
+        sums[i] = curr_sum;
     }
 
     let mut probs = exp_scores.clone();
     
     // prob = scores / sum 
-    for i in 0..exp_scores[0].len() {
-        
-        probs[0][i] = exp_scores[0][i] / sum;
+    for i in 0..probs.len(){
+
+        for j in 0..probs[0].len(){
+
+            probs[i][j] /= sums[i]
+        }
     }
 
     return probs;
