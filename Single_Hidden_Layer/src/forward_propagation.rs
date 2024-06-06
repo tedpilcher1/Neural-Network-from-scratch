@@ -1,9 +1,8 @@
 use crate::init_model::NN;
 use crate::matrix_functions::apply_dot_product;
-use std::f32::consts::PI;
 
 
-pub struct forward_output {
+pub struct ForwardOutput {
     pub a1 : Vec<Vec<f64>>,
     pub probs: Vec<Vec<f64>>,
 }
@@ -70,9 +69,9 @@ fn calc_probs(exp_scores : &mut Vec<Vec<f64>>) -> Vec<Vec<f64>> {
 }
 
 
-pub fn apply_forward_propagation (model : &mut NN, x : &mut Vec<Vec<f64>>) -> forward_output{
+pub fn apply_forward_propagation (model : &mut NN, x : &mut Vec<Vec<f64>>) -> ForwardOutput {
 
-    let mut fpv = forward_output {
+    let mut fpv = ForwardOutput {
         a1: Vec::new(),
         probs: Vec::new(),
     };
