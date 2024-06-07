@@ -5,12 +5,12 @@ mod backward_propagation;
 mod gradient_descent;
 
 use crate::init_model::build_model;
-use crate::forward_propagation::apply_forward_propagation;
+use crate::forward_propagation::predict;
 use crate::gradient_descent::apply_gradient_descent;
 
 fn test_run(){
 
-    let NUM_PASSES = 1;
+    let NUM_PASSES = 20000;
 
     // for testing
     let x: Vec<Vec<f64>> = vec![
@@ -22,9 +22,15 @@ fn test_run(){
     let y:Vec<i32> = vec![0, 0, 0];
 
     let mut model = build_model(2, 5, 2);
-    let forward_output = apply_forward_propagation(&mut model, &x);
-
     apply_gradient_descent(&mut model, &x, &y, NUM_PASSES, false);
+
+    let x2: Vec<Vec<f64>> = vec![
+        vec![0.67326617, -0.17303301],
+    ];
+
+    let prediction: i32 = predict(&mut model, &x2);
+
+    println!("{}", prediction);
 }
 
 fn main(){

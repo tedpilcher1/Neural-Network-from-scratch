@@ -1,3 +1,4 @@
+use rand_distr::num_traits::ToPrimitive;
 use crate::init_model::NN;
 use crate::matrix_functions::apply_dot_product;
 
@@ -98,4 +99,23 @@ pub fn apply_forward_propagation (model : &mut NN, x : &Vec<Vec<f64>>) -> Forwar
 
     // and return probabilities
     return fpv;
+}
+
+pub fn predict(model : &mut NN, x : &Vec<Vec<f64>>) -> i32{
+
+    let forward_output = apply_forward_propagation(model, x);
+
+    let mut maxProb:f64 = 0.0;
+    let mut maxIndex: i32 = -1;
+
+    for i in 0..forward_output.probs[0].len(){
+
+        if forward_output.probs[0][i] > maxProb {
+
+            maxProb = forward_output.probs[0][i];
+            maxIndex = i.to_i32().unwrap();
+        }
+    }
+
+    return maxIndex;
 }
