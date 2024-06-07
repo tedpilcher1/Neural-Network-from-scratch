@@ -1,3 +1,4 @@
+use rand_distr::num_traits::ToPrimitive;
 use crate::forward_propagation::ForwardOutput;
 use crate::init_model::NN;
 use crate::matrix_functions::apply_dot_product;
@@ -28,11 +29,24 @@ fn sum(delta : &mut Vec<Vec<f64>>) -> Vec<Vec<f64>>{
     return z;
 }
 
-pub fn apply_backward_propagation (model : &mut NN, gradients: &mut GradientWeightsBiases, forward_output: &ForwardOutput, x : &mut Vec<Vec<f64>>, y : &mut Vec<f64>) {
+fn calc_output_error(probs : &Vec<Vec<f64>>, y : &Vec<i32>) -> Vec<Vec<f64>> {
+
+    let mut delta3: Vec<Vec<f64>> = probs.clone();
+
+    // subtract 1 from prob of true class (1) for each example
+    for i in 0..delta3.len() {
+
+        let j: usize = y[i].to_usize().unwrap();
+        delta3[i][j] -= 1.0;
+    }
+
+    return delta3;
+}
+
+pub fn apply_backward_propagation (model : &mut NN, gradients: &mut GradientWeightsBiases, forward_output: &ForwardOutput, x : &Vec<Vec<f64>>, y : &Vec<i32>) {
 
     // calculate delta3, essentially the output layer error
-    let mut delta3 = forward_output.probs.clone();
-    // TODO
+    let mut delta3 = calc_output_error(&forward_output.probs, y);
 
     // calculate gradients of weights and biases for second layer (output)
     // dW2

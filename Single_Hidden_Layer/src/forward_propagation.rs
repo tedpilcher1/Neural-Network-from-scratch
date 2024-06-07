@@ -69,7 +69,7 @@ fn calc_probs(exp_scores : &mut Vec<Vec<f64>>) -> Vec<Vec<f64>> {
 }
 
 
-pub fn apply_forward_propagation (model : &mut NN, x : &mut Vec<Vec<f64>>) -> ForwardOutput {
+pub fn apply_forward_propagation (model : &mut NN, x : &Vec<Vec<f64>>) -> ForwardOutput {
 
     let mut fpv = ForwardOutput {
         a1: Vec::new(),
@@ -84,7 +84,6 @@ pub fn apply_forward_propagation (model : &mut NN, x : &mut Vec<Vec<f64>>) -> Fo
     fpv.a1 = z1.clone();
     apply_tanh(&mut fpv.a1);
 
-    println!("{:?}", fpv.a1);
 
     // calculate z2
     let mut z2 = apply_dot_product(&mut fpv.a1, &mut model.weights_2);

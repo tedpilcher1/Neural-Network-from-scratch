@@ -1,4 +1,4 @@
-pub fn apply_dot_product(a : &mut Vec<Vec<f64>>, b : &mut Vec<Vec<f64>>) -> Vec<Vec<f64>>{
+pub fn apply_dot_product(a : &Vec<Vec<f64>>, b : &Vec<Vec<f64>>) -> Vec<Vec<f64>>{
 
     let a_rows = a.len();
     let a_cols = a[0].len();

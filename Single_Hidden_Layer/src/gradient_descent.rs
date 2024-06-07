@@ -12,7 +12,7 @@ fn apply_regularisation_terms(model : &mut NN, gradients: &mut GradientWeightsBi
     // TODO add regularisation term to both weight gradients using: reg_lambda * weight
 }
 
-fn apply_gradient_descent (model : &mut NN, x : &mut Vec<Vec<f64>>, y : &mut Vec<f64>, num_passes: i32, print_loss: bool) {
+pub fn apply_gradient_descent (model : &mut NN, x : &Vec<Vec<f64>>, y : &Vec<i32>, num_passes: i32, print_loss: bool) {
 
     let mut gradients = GradientWeightsBiases {
 
