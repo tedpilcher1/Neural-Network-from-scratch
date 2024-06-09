@@ -33,13 +33,13 @@ fn apply_tanh(z: &Vec<Vec<f64>>) -> Vec<Vec<f64>>{
     return a;
 }
 
-fn calc_a_i(i : i32, model : &NeuralNetwork, a_prev : &Vec<Vec<f64>>) -> Vec<Vec<f64>>{
+fn calc_a_i(i : usize, model : &NeuralNetwork, a_prev : &Vec<Vec<f64>>) -> Vec<Vec<f64>>{
 
     let mut z_i: Vec<Vec<f64>> = Vec::new();
 
     // calculate z_i, weighted sum of previous layer output + bias
-    z_i = apply_dot_product(a_prev, model.weights[i]);
-    add_bias(&mut z_i, model.biases[i]);
+    z_i = apply_dot_product(a_prev, &model.weights[i]);
+    add_bias(&mut z_i, &model.biases[i]);
 
     // calculate a_i and return
     let a_i = apply_tanh(&z_i);
@@ -51,9 +51,9 @@ fn calc_exp(z : &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
 
     let mut exp = z.clone();
 
-    for i in 0..z.len() {
-        for j in 0..z[0].len() {
-            z[i][j] = z[i][j].exp();
+    for i in 0..exp.len() {
+        for j in 0..exp[0].len() {
+            exp[i][j] = exp[i][j].exp();
         }
     }
 
@@ -63,7 +63,7 @@ fn calc_exp(z : &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
 fn calc_probs(z : &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
 
     // calc exp_scores
-    let mut exp_scores = calc_exp(z : &Vec<Vec<f64>>);
+    let mut exp_scores = calc_exp(z);
 
     // sum scores
     let mut sums = vec![0.0; exp_scores.len()];
@@ -107,7 +107,7 @@ pub fn apply_forward_propagation(model : &mut NeuralNetwork, forward_output: &mu
 
     for i in 1..model.hidden_layer_sizes.len(){
 
-        forward_output.a[i] = calc_a_i(i.to_i32().unwrap(), model, &forward_output.a[i - 1])
+        forward_output.a[i] = calc_a_i(i, model, &forward_output.a[i - 1])
     }
 
     // calculate probabilities

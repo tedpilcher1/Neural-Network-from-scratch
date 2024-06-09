@@ -6,7 +6,7 @@ use rand_distr::{Normal, Distribution};
 pub struct NeuralNetwork {
     pub input_size: i32,
     pub output_size: i32,
-    pub num_hidden_layers: i32,
+    pub num_hidden_layers: usize,
     pub hidden_layer_sizes: Vec<i32>, // e.g. [10, 5]: 10 node layer followed by 5 node layer
     pub weights: Vec<Vec<Vec<f64>>>,
     pub biases: Vec<Vec<Vec<f64>>>,
@@ -71,8 +71,8 @@ pub fn build_model (input_size : i32, output_size: i32, hidden_layer_sizes : Vec
 
         input_size,
         output_size,
+        num_hidden_layers: hidden_layer_sizes.len(),
         hidden_layer_sizes,
-        num_hidden_layers: hidden_layer_sizes.len() as i32,
         weights: Vec::new(),
         biases: Vec::new(),
     };
