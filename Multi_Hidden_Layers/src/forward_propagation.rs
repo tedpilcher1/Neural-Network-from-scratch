@@ -1,5 +1,5 @@
 use rand_distr::num_traits::ToPrimitive;
-use crate::init_model::Model;
+use crate::init_model::NeuralNetwork;
 use crate::matrix_functions::apply_dot_product;
 
 pub struct ForwardOutput {
@@ -33,7 +33,7 @@ fn apply_tanh(z: &Vec<Vec<f64>>) -> Vec<Vec<f64>>{
     return a;
 }
 
-fn calc_a_i(i : i32, model : &Model, a_prev : &Vec<Vec<f64>>) -> Vec<Vec<f64>>{
+fn calc_a_i(i : i32, model : &NeuralNetwork, a_prev : &Vec<Vec<f64>>) -> Vec<Vec<f64>>{
 
     let mut z_i: Vec<Vec<f64>> = Vec::new();
 
@@ -91,7 +91,7 @@ fn calc_probs(z : &Vec<Vec<f64>>) -> Vec<Vec<f64>> {
     return exp_scores;
 }
 
-pub fn apply_forward_propagation(model : &mut Model, forward_output: &mut ForwardOutput, x : &Vec<Vec<f64>>) {
+pub fn apply_forward_propagation(model : &mut NeuralNetwork, forward_output: &mut ForwardOutput, x : &Vec<Vec<f64>>) {
 
     // assumes forward_output a is already initialised with correct length
 

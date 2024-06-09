@@ -3,9 +3,10 @@ use rand::rngs::ThreadRng;
 use rand_distr::{Normal, Distribution};
 
 
-pub struct Model {
+pub struct NeuralNetwork {
     pub input_size: i32,
     pub output_size: i32,
+    pub num_hidden_layers: i32,
     pub hidden_layer_sizes: Vec<i32>, // e.g. [10, 5]: 10 node layer followed by 5 node layer
     pub weights: Vec<Vec<Vec<f64>>>,
     pub biases: Vec<Vec<Vec<f64>>>,
@@ -32,7 +33,7 @@ fn init_single_layer_weights(normal: &Normal<f64>, rng: &mut ThreadRng, prev_lay
     weights.push(layer_weights);
 }
 
-fn init_layer_weights (model : &mut Model, normal: &Normal<f64>, rng: &mut ThreadRng) {
+fn init_layer_weights (model : &mut NeuralNetwork, normal: &Normal<f64>, rng: &mut ThreadRng) {
 
     // nothing to initialise if no hidden layers
     if model.hidden_layer_sizes.len() == 0 {
@@ -52,7 +53,7 @@ fn init_layer_weights (model : &mut Model, normal: &Normal<f64>, rng: &mut Threa
     init_single_layer_weights(normal, rng, model.hidden_layer_sizes[model.hidden_layer_sizes.len() - 1], model.output_size, &mut model.weights);
 }
 
-fn init_biases (model : &mut Model) {
+fn init_biases (model : &mut NeuralNetwork) {
 
     // initialise each hidden layers biases
     for i in 0..model.hidden_layer_sizes.len(){
@@ -64,13 +65,14 @@ fn init_biases (model : &mut Model) {
     model.biases.push(vec![vec![0.0; model.output_size as usize]; 1])
 }
 
-pub fn build_model (input_size : i32, output_size: i32, hidden_layer_sizes : Vec<i32>) -> Model{
+pub fn build_model (input_size : i32, output_size: i32, hidden_layer_sizes : Vec<i32>) -> NeuralNetwork{
 
-    let mut model = Model {
+    let mut model = NeuralNetwork {
 
         input_size,
         output_size,
         hidden_layer_sizes,
+        num_hidden_layers: hidden_layer_sizes.len() as i32,
         weights: Vec::new(),
         biases: Vec::new(),
     };
